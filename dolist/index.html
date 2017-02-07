@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link type="text/css" rel="stylesheet" href=".sheet.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <style>
+    .done {
+        text-decoration: line-through;
+        color: #ccc;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="sides">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4" id="left">
+                    <h1><b>
+                    Осталось: <span id="done">0</span> всего: <span id="all">0</span>
+                </b></h1>
+                    <form action="">
+                        <input type="text" />
+                    </form>
+                    <div class="buttons">
+                        <button id="delete"><b>УДАЛИТЬ ВЫБРАННЫЕ</b></button>
+                        <button id="reset"><b>СБРОС</b></button>
+                    </div>
+                </div>
+                <div class="col-md-8" id="right">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="middle">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4" id="middle">
+                    <ul id="todo-list">
+                </div>
+                <div class="col-md-8"></div>
+            </div>
+        </div>
+    </div>
+    <script src="jquery-1.12.3.min.js"></script>
+    <script>
+    function allQty() {
+        return $('#todo-list li').length;
+    }
+
+    function addQty() {
+        $('#all').text(allQty());
+        $('#done').text(doneQty());
+    }
+
+    function doneQty() {
+        return allQty() - $('#todo-list li').has('input:checked').length;
+    }
+
+    $('form').on('submit', function(e) {
+        // отменяем submit
+        e.preventDefault();
+
+        // создаём <li>txt</li>
+        var input = $(this).find('input'),
+            li = $('<li>', {
+                html: '<input type="checkbox">' + input.val()
+            });
+
+        // добавляем елемент к <ul id="todo-list">
+        $('#todo-list').append(li);
+
+        // имитируем отправку формы
+        input.val('');
+        addQty();
+    });
+
+    $('#todo-list').on('click', 'input[type="checkbox"]', function() {
+        $(this).parent().toggleClass('done');
+        addQty();
+    });
+    </script>
+    <script>
+    $('#reset').click(function() {
+        location.reload();
+    });
+    </script>
+    <script>
+    $('#delete').click(function() {
+        $("li").remove(".done");
+    });
+    </script>
+</body>
+
+</html>
